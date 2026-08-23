@@ -72,10 +72,15 @@ elif menu == "Register Student":
     name = st.text_input("Student Name")
     roll_no = st.text_input("Roll Number")
 
+    camera_image = st.camera_input("Take a photo")
+
     if st.button("Register Student", type="primary"):
 
         if not name.strip() or not roll_no.strip():
             st.warning("Please enter both student name and roll number.")
+
+        elif camera_image is None:
+            st.warning("Please take a face photo first.")
 
         elif student_exists(roll_no.strip()):
             st.error("This roll number is already registered.")
@@ -91,8 +96,10 @@ elif menu == "Register Student":
                     f"Student registered successfully! Student ID: {student_id}"
                 )
 
-                st.info(
-                    "Face capture will be added in the next step."
+                st.image(
+                    camera_image,
+                    caption="Captured Face",
+                    use_container_width=True
                 )
 
             except Exception as e:
