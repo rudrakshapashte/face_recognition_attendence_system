@@ -3,7 +3,6 @@ import os
 import cv2
 import numpy as np
 from face_system import train_model, get_student_name
-from database import mark_attendance
 from datetime import date
 from database import (
     init_database,
