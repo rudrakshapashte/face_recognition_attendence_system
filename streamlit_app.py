@@ -1,4 +1,8 @@
 import streamlit as st
+import os
+import cv2
+import numpy as np
+from face_system import train_model
 from datetime import date
 from database import (
     init_database,
