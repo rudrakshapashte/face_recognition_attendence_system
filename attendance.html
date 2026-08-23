@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Attendance Records</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+<header><h1>Attendance Records</h1><p>Daily Attendance Module</p></header>
+<nav>
+    <a href="/">Dashboard</a>
+    <a href="/register">Register Student</a>
+    <a class="active" href="/attendance">Attendance</a>
+    <a href="/reports">Reports</a>
+</nav>
+<main>
+<section class="table-box">
+    <div class="toolbar">
+        <div>
+            <h2>Attendance</h2>
+            <p class="muted">View all saved attendance records.</p>
+        </div>
+        <div>
+            <label class="inline-label" for="dateFilter">Date</label>
+            <input id="dateFilter" type="date">
+            <button class="button small" onclick="loadAttendance()">Refresh</button>
+            <a class="button small" href="/api/export">Export CSV</a>
+        </div>
+    </div>
+    <div class="table-wrap">
+        <table>
+            <thead><tr><th>Date</th><th>Time</th><th>Name</th><th>Roll No</th><th>Status</th></tr></thead>
+            <tbody id="attendanceBody"></tbody>
+        </table>
+    </div>
+</section>
+</main>
+<script src="/static/js/app.js"></script>
+<script>document.addEventListener("DOMContentLoaded", loadAttendance);</script>
+</body>
+</html>

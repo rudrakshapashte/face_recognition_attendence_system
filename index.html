@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Face Attendance | Dashboard</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+<header>
+    <h1>Face Recognition Attendance System</h1>
+    <p>TY Diploma ITR Project</p>
+</header>
+
+<nav>
+    <a class="active" href="/">Dashboard</a>
+    <a href="/register">Register Student</a>
+    <a href="/attendance">Attendance</a>
+    <a href="/reports">Reports</a>
+</nav>
+
+<main>
+    <section class="cards">
+        <div class="card"><span>Total Students</span><strong id="total">0</strong></div>
+        <div class="card"><span>Present Today</span><strong id="present">0</strong></div>
+        <div class="card"><span>Absent Today</span><strong id="absent">0</strong></div>
+        <div class="card"><span>Attendance</span><strong id="percentage">0%</strong></div>
+    </section>
+
+    <section class="hero">
+        <h2>Automatic Attendance</h2>
+        <p>Register a student's face once, then use the laptop webcam to recognize the student and mark attendance.</p>
+        <a class="button" href="/register">Register Student</a>
+        <button class="button" onclick="startAttendance()">Start Attendance</button>
+        <p id="message" class="message"></p>
+    </section>
+
+    <section class="info-grid">
+        <div class="panel">
+            <h3>How it works</h3>
+            <ol>
+                <li>Register student name and roll number.</li>
+                <li>Capture 30 face samples using webcam.</li>
+                <li>Train the LBPH face recognition model.</li>
+                <li>Start attendance and look at the camera.</li>
+                <li>Attendance is saved once per student per day.</li>
+            </ol>
+        </div>
+        <div class="panel">
+            <h3>Today's Date</h3>
+            <p id="dateText">Loading...</p>
+            <p class="muted">Use the Attendance page to view records or export CSV.</p>
+        </div>
+    </section>
+</main>
+<script src="/static/js/app.js"></script>
+</body>
+</html>
