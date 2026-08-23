@@ -96,15 +96,58 @@ elif menu == "Register Student":
                     roll_no.strip()
                 )
 
-                st.success(
-                    f"Student registered successfully! Student ID: {student_id}"
+                image_bytes = camera_image.getvalue()
+                image_array = np.frombuffer(image_bytes, np.uint8)
+                image = cv2.imdecode(image_array, cv2.IMREAD_GRAYSCALE)
+
+                if image is None:
+                    raise RuntimeError("Could not read the captured image.")
+
+                cascade = cv2.CascadeClassifier(
+                    cv2.data.haarcascades +
+                    "haarcascade_frontalface_default.xml"
                 )
 
-                st.image(
-                    camera_image,
-                    caption="Captured Face",
-                    use_container_width=True
+                faces = cascade.detectMultiScale(
+                    image,
+                    scaleFactor=1.2,
+                    minNeighbors=5,
+                    minSize=(80, 80)
                 )
+
+                if len(faces) == 0:
+                    st.error("No face detected. Please take another photo.")
+                else:
+                    os.makedirs(
+                        "dataset/students",
+                        exist_ok=True
+                    )
+
+                    x, y, w, h = faces[0]
+                    face = image[y:y+h, x:x+w]
+
+                    path = (
+                        f"dataset/students/"
+                        f"User.{student_id}.1.jpg"
+                    )
+
+                    cv2.imwrite(path, face)
+
+                    total_faces = train_model()
+
+                    st.success(
+                        f"Student registered and face model trained successfully!"
+                    )
+
+                    st.info(
+                        f"Training images used: {total_faces}"
+                    )
+
+                    st.image(
+                        camera_image,
+                        caption="Captured Face",
+                        use_container_width=True
+                    )
 
             except Exception as e:
                 st.error(f"Registration failed: {e}")
