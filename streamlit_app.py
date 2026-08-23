@@ -2,7 +2,8 @@ import streamlit as st
 import os
 import cv2
 import numpy as np
-from face_system import train_model
+from face_system import train_model, get_student_name
+from database import mark_attendance
 from datetime import date
 from database import (
     init_database,
@@ -48,6 +49,7 @@ menu = st.sidebar.selectbox(
     [
         "Dashboard",
         "Register Student",
+        "Mark Attendance",
         "Students",
         "Attendance Report"
     ]
@@ -151,6 +153,84 @@ elif menu == "Register Student":
 
             except Exception as e:
                 st.error(f"Registration failed: {e}")
+
+elif menu == "Mark Attendance":
+
+    st.subheader("Mark Attendance")
+
+    camera_image = st.camera_input("Look at the camera")
+
+    if camera_image is not None:
+
+        model_file = "trainer/trainer.yml"
+
+        if not os.path.exists(model_file):
+            st.error("No trained face model found. Register a student first.")
+
+        else:
+            image_bytes = camera_image.getvalue()
+            image_array = np.frombuffer(image_bytes, np.uint8)
+            image = cv2.imdecode(image_array, cv2.IMREAD_GRAYSCALE)
+
+            cascade = cv2.CascadeClassifier(
+                cv2.data.haarcascades +
+                "haarcascade_frontalface_default.xml"
+            )
+
+            faces = cascade.detectMultiScale(
+                image,
+                scaleFactor=1.2,
+                minNeighbors=5,
+                minSize=(80, 80)
+            )
+
+            if len(faces) == 0:
+                st.warning("No face detected. Please try again.")
+
+            else:
+                recognizer = cv2.face.LBPHFaceRecognizer_create()
+                recognizer.read(model_file)
+
+                recognized = False
+
+                for (x, y, w, h) in faces[:1]:
+
+                    student_id, confidence = recognizer.predict(
+                        image[y:y+h, x:x+w]
+                    )
+
+                    student = get_student_name(student_id)
+
+                    if student and confidence < 65:
+
+                        name, roll_no = student
+                        is_new = mark_attendance(student_id)
+
+                        st.image(
+                            camera_image,
+                            caption="Recognized Face",
+                            use_container_width=True
+                        )
+
+                        if is_new:
+                            st.success(
+                                f"Attendance marked: {name} ({roll_no})"
+                            )
+                        else:
+                            st.info(
+                                f"{name} ({roll_no}) is already marked present today."
+                            )
+
+                        st.write(f"Recognition confidence: {confidence:.2f}")
+                        recognized = True
+
+                    else:
+                        st.error("Face not recognized.")
+
+                if not recognized:
+                    st.warning(
+                        "Try again with better lighting and keep your face clearly visible."
+                    )
 
 elif menu == "Students":
 
