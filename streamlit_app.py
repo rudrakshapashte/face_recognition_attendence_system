@@ -11,7 +11,8 @@ from database import (
     get_students,
     get_attendance,
     get_today_stats,
-    delete_student
+    delete_student,
+    mark_attendance
 )
 
 st.set_page_config(
