@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register Student</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+<header><h1>Register Student</h1><p>Face Capture Module</p></header>
+<nav>
+    <a href="/">Dashboard</a>
+    <a class="active" href="/register">Register Student</a>
+    <a href="/attendance">Attendance</a>
+    <a href="/reports">Reports</a>
+</nav>
+<main>
+<section class="form-box">
+    <h2>Student Details</h2>
+    <label for="name">Student Name</label>
+    <input id="name" maxlength="100" placeholder="Enter student name" autocomplete="off">
+
+    <label for="roll_no">Roll Number</label>
+    <input id="roll_no" maxlength="30" placeholder="Enter roll number" autocomplete="off">
+
+    <button id="registerBtn" class="button" onclick="registerStudent()">Capture & Register Face</button>
+    <p id="message" class="message"></p>
+
+    <div class="tips">
+        <b>Before starting:</b>
+        <ul>
+            <li>Keep the face clearly visible.</li>
+            <li>Use good front lighting.</li>
+            <li>Close other apps using the webcam.</li>
+            <li>Do not close the camera window until samples finish.</li>
+        </ul>
+    </div>
+</section>
+</main>
+<script src="/static/js/app.js"></script>
+</body>
+</html>
